@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1 style="margin-bottom: 20px;">GamePoisk</h1>
+
+<!-- Search Box -->
+<form method="get" class="search-box">
+  <input type="text" name="q" value="{{ query }}" placeholder="Search by title, genre, developer, publisher">
+  <button type="submit">Search</button>
+</form>
+
+<!-- Game List -->
+<div>
+{% for game in games %}
+  <div class="game-card">
+
+    <!-- Game Image -->
+    {% if game.image %}
+      <img src="{{ game.image.url }}" alt="{{ game.title }}">
+    {% else %}
+      <img src="{% static 'no-image.png' %}" alt="No image">
+    {% endif %}
+
+    <!-- Info Box -->
+    <div class="game-info">
+        <h2>
+            <a href="{% url 'games:game_detail' game.pk %}">
+                {{ game.title }}
+            </a>
+        </h2>
+
+        <p><strong>Genre:</strong> {{ game.genre }}</p>
+        <p><strong>Developer:</strong> {{ game.developer }}</p>
+        <p><strong>Publisher:</strong> {{ game.publisher }}</p>
+    </div>
+
+  </div>
+{% empty %}
+  <p>No games found.</p>
+{% endfor %}
+</div>
+
+{% endblock %}

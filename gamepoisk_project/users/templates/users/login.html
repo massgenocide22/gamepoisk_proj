@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h2 style="margin-bottom: 20px;">Login</h2>
+
+<div class="game-detail" style="max-width: 450px; margin: auto;">
+
+    <form method="post" style="margin-top: 10px;">
+        {% csrf_token %}
+
+        <div class="comment-form">
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<a href="{% url 'games:game_list' %}" style="color:#2563eb; text-decoration:none;">&larr; Back to list</a>
+
+<div class="game-detail">
+
+    <h1 style="margin-bottom: 20px;">{{ game.title }}</h1>
+
+    {% if game.image %}
+        <img src="{{ game.image.url }}" alt="{{ game.title }}">
+    {% else %}
+        <img src="{% static 'no-image.png' %}" alt="No Image">
+    {% endif %}
+
+    <p><strong>Genre:</strong> {{ game.genre }}</p>
+    <p><strong>Developer:</strong> {{ game.developer }}</p>
+    <p><strong>Publisher:</strong> {{ game.publisher }}</p>
+
+</div>
+
+<!-- COMMENTS -->
+<div class="comment-block">
+    <h3 style="margin-bottom: 10px;">Comments</h3>
+
+    {% for comment in comments %}
+    <div class="comment">
+        <strong>{{ comment.author }}</strong>
+        <small> — {{ comment.created_at }}</small>
+        <p>{{ comment.content }}</p>
+    </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+</div>
+
+<!-- ADD COMMENT FORM -->
+{% if user.is_authenticated %}
+<div class="comment-block" style="margin-top: 20px;">
+    <h4 style="margin-bottom: 10px;">Add a comment</h4>
+
+    <form method="post" class="comment-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+{% else %}
+<p style="margin-top: 20px;">
+    <a href="{% url 'users:login' %}" style="color:#2563eb;">Log in</a> to leave a comment.
+</p>
+{% endif %}
+
+{% endblock %}
